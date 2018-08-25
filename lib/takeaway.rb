@@ -1,12 +1,13 @@
 require 'twilio-ruby'
 require_relative 'dishes'
+require_relative 'account_info'
 
 class Takeaway
   include Dishes
 
   def initialize
-    @account_sid = 'ACaa769211a7f6f77e7b2ef644ee1ec9cc'
-    @auth_token = '221f14fb766a760b8af3d96aa3e6ab35'
+    @account_sid = ACCOUNT_SID
+    @auth_token = AUTH_TOKEN
     @client = Twilio::REST::Client.new @account_sid, @auth_token
     @account = @client.api.account
     @order = []
@@ -16,6 +17,16 @@ class Takeaway
     present_menu
     choose
     confirm_order(order_total(order))
+  end
+
+  def pull_texts
+    @client.api.account.messages.list.map do |m|
+       [m.from, m.body] if m.direction == 'inbound' 
+    end.compact!.flatten
+  end
+
+  def p_texts
+    @client.api.account.messages.list
   end
 
   private
@@ -48,12 +59,9 @@ class Takeaway
   def confirm_order(total)
     @client.messages.create(
       from: '+447449791316',
-      to: '+447725610150',
+      to: MOB_NO,
       body: "Order received for £#{total}, will be with you by #{delivery_time}" 
     )
     order.clear
   end
 end
-
-ta = Takeaway.new
-ta.take_order

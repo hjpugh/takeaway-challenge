@@ -6,12 +6,15 @@ class FakeSMS
   def initialize
     @messages = []
   end
+
   def api
     self
   end
+
   def account
     self
   end
+  
   def messages
     self
   end

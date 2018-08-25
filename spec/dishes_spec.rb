@@ -6,7 +6,7 @@ describe Dishes do
 
   describe '#format' do
     it 'returns a formatted list dishes' do
-      expect(subject.format).to eq ['Name: Chicken Potpie, Price: 5.63, no: 1',
+      expect(subject.formatted_menu).to eq ['Name: Chicken Potpie, Price: 5.63, no: 1',
                                     'Name: Grilled Shrimp Tacos, Price: 4.02, no: 2',
                                     'Name: Pizza Margherita, Price: 8.05, no: 3',
                                     'Name: Lemon-Shallot Scallop, Price: 8.2, no: 4',
